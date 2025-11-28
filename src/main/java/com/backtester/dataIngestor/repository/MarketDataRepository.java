@@ -18,6 +18,9 @@ public interface MarketDataRepository extends JpaRepository<MarketData, Long> {
             LocalDateTime end
     );
 
+    // Get all candles for a symbol ordered by time (useful for full-history backtests)
+    List<MarketData> findBySymbolOrderByTimestampAsc(Symbol symbol);
+
     // Delete all market data rows for a given symbol (e.g., re-upload clean history)
     void deleteBySymbol(Symbol symbol);
 }
