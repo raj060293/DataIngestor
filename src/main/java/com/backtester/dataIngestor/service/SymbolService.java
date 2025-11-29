@@ -1,7 +1,7 @@
 package com.backtester.dataIngestor.service;
 
-import com.backtester.dataIngestor.dto.SymbolDto;
 import com.backtester.dataIngestor.entity.Symbol;
+import com.backtester.dataIngestor.responses.SymbolDto;
 import com.backtester.dataIngestor.requests.SymbolRequest;
 
 import java.util.List;
@@ -11,4 +11,5 @@ public interface SymbolService {
     public SymbolDto addSymbol(SymbolRequest symbol);
     public void deleteSymbolById(Long id);
     public void deleteSymbolByTicker(String ticker);
+    public Symbol getOrCreateSymbol(String ticker);
 }

@@ -1,6 +1,6 @@
 package com.backtester.dataIngestor.controller;
 
-import com.backtester.dataIngestor.dto.SymbolDto;
+import com.backtester.dataIngestor.responses.SymbolDto;
 import com.backtester.dataIngestor.requests.SymbolRequest;
 import com.backtester.dataIngestor.service.SymbolService;
 import jakarta.validation.Valid;

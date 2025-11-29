@@ -3,9 +3,9 @@ package com.backtester.dataIngestor.service;
 import com.backtester.dataIngestor.enums.Extension;
 import org.springframework.web.multipart.MultipartFile;
 
-public class MarketDataFactory {
+public class MarketDataParserFactory {
 
-    private MarketDataFactory() {
+    private MarketDataParserFactory() {
 
     }
 

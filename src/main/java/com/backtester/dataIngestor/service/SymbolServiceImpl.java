@@ -1,6 +1,6 @@
 package com.backtester.dataIngestor.service;
 
-import com.backtester.dataIngestor.dto.SymbolDto;
+import com.backtester.dataIngestor.responses.SymbolDto;
 import com.backtester.dataIngestor.entity.Symbol;
 import com.backtester.dataIngestor.repository.SymbolRepository;
 import com.backtester.dataIngestor.requests.SymbolRequest;
@@ -55,6 +55,8 @@ public class SymbolServiceImpl implements SymbolService{
         return SymbolUtil.mapSymbolEntityToDto(savedSymbol);
     }
 
+    public
+
     public void deleteSymbolById(Long id) {
         symbolRepository.deleteById(id);
     }
@@ -62,5 +64,21 @@ public class SymbolServiceImpl implements SymbolService{
     public void deleteSymbolByTicker(String ticker) {
         Optional<Symbol> savedTicker = symbolRepository.findByTicker(ticker);
         savedTicker.ifPresent(symbol -> deleteSymbolById(symbol.getId()));
+    }
+
+    public Symbol getOrCreateSymbol(String ticker) {
+        if (ticker == null || ticker.isBlank()) {
+            throw  new IllegalArgumentException("Ticker cannot be null or empty");
+        }
+
+        String normalized = ticker.toLowerCase().trim();
+
+        return symbolRepository.findByTicker(normalized)
+                .orElseGet(() -> {
+                    Symbol s = new Symbol();
+                    s.setTicker(normalized);
+                    s.setName(normalized + "Stock");
+                    return symbolRepository.save(s);
+                });
     }
 }

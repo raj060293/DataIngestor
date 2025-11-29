@@ -1,4 +1,4 @@
-package com.backtester.dataIngestor.dto;
+package com.backtester.dataIngestor.responses;
 
 import lombok.Getter;
 import lombok.Setter;

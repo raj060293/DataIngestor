@@ -1,6 +1,6 @@
 package com.backtester.dataIngestor.utils;
 
-import com.backtester.dataIngestor.dto.SymbolDto;
+import com.backtester.dataIngestor.responses.SymbolDto;
 import com.backtester.dataIngestor.entity.Symbol;
 
 public class SymbolUtil {

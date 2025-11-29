@@ -9,19 +9,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvDataParser implements MarketDataParser{
+import static com.backtester.dataIngestor.utils.MarketDataUtil.parseFlexibleTimeStamp;
+import static com.backtester.dataIngestor.utils.MarketDataUtil.validateOhlc;
 
-    private static final DateTimeFormatter[] DATE_FORMATTERS = {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    };
+public class CsvDataParser implements MarketDataParser{
 
     @Override
     public List<MarketData> parse(InputStream inputStream) throws IOException {
@@ -69,26 +63,6 @@ public class CsvDataParser implements MarketDataParser{
 
         return new MarketData(null, timestamp, open, high, low, close, volume);
 
-    }
-
-    private void validateOhlc(double high, double low, double open, double close, int lineNumber) {
-        if (high < low) {
-            throw new DataProcessingException("High cannot be less than low at line " + lineNumber);
-        }
-        if (high < Math.max(open, close) || low > Math.min(open, close)) {
-            throw new DataProcessingException("Invalid OHLC range at line " + lineNumber);
-        }
-    }
-
-    private LocalDateTime parseFlexibleTimeStamp(String date, int lineNumber) {
-        for (DateTimeFormatter dateTimeFormatter : DATE_FORMATTERS) {
-            try {
-                return LocalDateTime.parse(date, dateTimeFormatter);
-            } catch (DateTimeParseException dateTimeParseException) {
-
-            }
-        }
-        throw new DataProcessingException("Invalid timestamp format at line " + lineNumber + ": " + date);
     }
 
     private double parseDouble(String value, int lineNumber, String fieldName) {
