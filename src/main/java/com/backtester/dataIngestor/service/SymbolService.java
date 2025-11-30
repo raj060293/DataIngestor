@@ -12,4 +12,5 @@ public interface SymbolService {
     public void deleteSymbolById(Long id);
     public void deleteSymbolByTicker(String ticker);
     public Symbol getOrCreateSymbol(String ticker);
+    public Symbol getSymbolByTicker(String ticker);
 }

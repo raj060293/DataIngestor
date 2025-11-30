@@ -5,6 +5,7 @@ import com.backtester.dataIngestor.entity.Symbol;
 import com.backtester.dataIngestor.repository.SymbolRepository;
 import com.backtester.dataIngestor.requests.SymbolRequest;
 import com.backtester.dataIngestor.utils.SymbolUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -55,8 +56,6 @@ public class SymbolServiceImpl implements SymbolService{
         return SymbolUtil.mapSymbolEntityToDto(savedSymbol);
     }
 
-    public
-
     public void deleteSymbolById(Long id) {
         symbolRepository.deleteById(id);
     }
@@ -80,5 +79,16 @@ public class SymbolServiceImpl implements SymbolService{
                     s.setName(normalized + "Stock");
                     return symbolRepository.save(s);
                 });
+    }
+
+    public Symbol getSymbolByTicker(String ticker) {
+        if (ticker == null || ticker.isBlank()) {
+            throw new IllegalArgumentException("Ticker cannot be null or empty");
+        }
+
+        String normalized = ticker.toLowerCase().trim();
+        return symbolRepository.findByTicker(ticker)
+                .orElseThrow(() -> new EntityNotFoundException(
+                "Symbol not found for ticker: " + normalized));
     }
 }
